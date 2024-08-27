@@ -1,3 +1,3 @@
 module.exports = app => {
- ['Phone', 'Info'].forEach(d => require('./driver/' + d)(app));
+ ['Phone', 'Info', 'Vehicles'].forEach(d => require('./driver/' + d)(app));
 };
