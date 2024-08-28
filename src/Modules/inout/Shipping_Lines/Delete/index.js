@@ -8,7 +8,8 @@ module.exports =
    try {
     const { id } = req.query;
 
-    if (!isPositiveInteger(id)) return res.status(404).json({ success: false, message: 'Shipping line was not found.' });
+    if (!isPositiveInteger(id))
+     return res.status(404).json({ success: false, message: 'Shipping line was not found.' });
 
     const { rows } = await pool.query('DELETE FROM inout."Shipping_Lines" WHERE 1=1 AND id = $1 RETURNING *', [id]);
 
