@@ -6,7 +6,7 @@ module.exports =
    const { isPositiveInteger, SQLfeatures } = res.locals.utils;
    try {
     const { id } = req.query;
-    if (!isPositiveInteger(id)) return res.status(404).json({ Success: false, msg: 'Shipping line was not found.' });
+    if (!isPositiveInteger(id)) return res.status(404).json({ success: false, msg: 'Shipping line was not found.' });
 
     const { sets, values, filters } = SQLfeatures.update({ filters: { id }, ...req.body });
 

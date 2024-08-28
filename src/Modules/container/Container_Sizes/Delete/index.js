@@ -15,7 +15,7 @@ module.exports =
      id,
     ]);
 
-    res.json({ Success: true, msg: 'Container size was deleted successfully.', data: rows });
+    res.json({ success: true, msg: 'Container size was deleted successfully.', data: rows });
    } catch ({ message }) {
     res.json({ success: false, message });
    }

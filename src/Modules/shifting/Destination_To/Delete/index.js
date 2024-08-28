@@ -13,7 +13,7 @@ module.exports =
 
     const { rows } = await pool.query('DELETE FROM shifting."Destination_To" WHERE 1=1 AND id = $1 RETURNING *', [id]);
 
-    res.json({ Success: true, msg: 'Destination to was deleted successfully.', data: rows });
+    res.json({ success: true, msg: 'Destination to was deleted successfully.', data: rows });
    } catch ({ message }) {
     res.json({ success: false, message });
    }
