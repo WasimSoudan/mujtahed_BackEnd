@@ -11,7 +11,7 @@ module.exports =
     const { sets, values, filters } = SQLfeatures.update({ filters: { id }, ...req.body });
 
     const { rows } = await pool.query(
-     `UPDATE driver."Container_Sizes" SET ${sets} WHERE ${filters} RETURNING *`,
+     `UPDATE container."Container_Sizes" SET ${sets} WHERE ${filters} RETURNING *`,
      values
     );
 

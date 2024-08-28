@@ -11,7 +11,9 @@ module.exports =
     if (!isPositiveInteger(id))
      return res.status(404).json({ success: false, message: 'Container_Sizes was not found.' });
 
-    const { rows } = await pool.query('DELETE FROM driver."Container_Sizes" WHERE 1=1 AND id = $1 RETURNING *', [id]);
+    const { rows } = await pool.query('DELETE FROM container."Container_Sizes" WHERE 1=1 AND id = $1 RETURNING *', [
+     id,
+    ]);
 
     res.json({ Success: true, msg: 'Container size was deleted successfully.', data: rows });
    } catch ({ message }) {

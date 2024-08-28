@@ -1,7 +1,7 @@
 module.exports =
  route =>
  ({ pool, ...app }) => {
-  // Create Container_Sizes
+  // Create Driver_Phones
   app.post(route, async (req, res) => {
    try {
     const fields = Object.keys(req.body);
@@ -9,11 +9,11 @@ module.exports =
     const enc_values = values.map((_, i) => `$${++i}`);
 
     const { rows } = await pool.query(
-     `INSERT INTO container."Container_Sizes"(${fields}) VALUES(${enc_values}) RETURNING *`,
+     `INSERT INTO driver."Driver_Phones"(${fields}) VALUES(${enc_values}) RETURNING *`,
      values
     );
 
-    res.json({ success: true, message: 'Container size was created successfully.', data: rows });
+    res.json({ success: true, message: 'Phone was created successfully.', data: rows });
    } catch ({ message }) {
     res.json({ success: false, message });
    }
