@@ -9,7 +9,7 @@ module.exports =
     const enc_values = values.map((_, i) => `$${++i}`);
 
     const { rows } = await pool.query(
-     `INSERT INTO inout."Outcomings"(${fields}) VALUES(${enc_values}) RETURNING *`,
+     `INSERT INTO inout."Get_Outs"(${fields}) VALUES(${enc_values}) RETURNING *`,
      values
     );
 

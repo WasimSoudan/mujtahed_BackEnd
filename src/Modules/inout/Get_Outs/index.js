@@ -1,5 +1,5 @@
 module.exports = app => {
- const route = '/REST/outcomings';
+ const route = '/REST/get_outs';
 
  require('./Delete')(route)(app);
  require('./Create')(route)(app);

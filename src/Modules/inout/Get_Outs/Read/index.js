@@ -7,7 +7,7 @@ module.exports =
    try {
     const { id, limit, offset } = req.query;
 
-    const SQLquery = 'SELECT * FROM inout."V_Outcomings" WHERE 1=1 ';
+    const SQLquery = 'SELECT * FROM inout."V_Get_Outs" WHERE 1=1 ';
 
     const { rows } = isPositiveInteger(id)
      ? await pool.query(SQLquery + 'AND id = $1', [id])
