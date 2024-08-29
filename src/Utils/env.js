@@ -8,7 +8,7 @@ module.exports = {
    USER_NANE: 'trella',
    USER_PASSWORD: 'KTcPorI*jNb0M3$z',
    DBNAME: 'trella',
-   PORT: '5433',
+   PORT: '5432',
    HOST: 'uranus.iconsjo.space',
    MAX: 30,
   },
