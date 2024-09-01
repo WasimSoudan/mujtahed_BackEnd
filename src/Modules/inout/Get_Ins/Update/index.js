@@ -10,7 +10,7 @@ module.exports =
 
     const { sets, values, filters } = SQLfeatures.update({ filters: { id }, ...req.body });
 
-    const { rows } = await pool.query(`UPDATE inout."Incomings" SET ${sets} WHERE ${filters} RETURNING *`, values);
+    const { rows } = await pool.query(`UPDATE inout."Get_Ins" SET ${sets} WHERE ${filters} RETURNING *`, values);
 
     res.json({ success: true, msg: 'Incoming was updated successfully.', data: rows });
    } catch ({ message }) {
