@@ -13,4 +13,13 @@ module.exports = {
    MAX: 30,
   },
  },
+ EMAIL: {
+  BASEURL: 'https://sendmail.iconsjo.space/REST',
+  mailBasket: val => val % 5,
+  transport: inx => ({
+   service: 'gmail',
+   host: 'smtp.gmail.com',
+   auth: [{ user: 'uoamobile1@gmail.com', pass: 'rdlblvuhzgrwivlp' }][inx],
+  }),
+ },
 };
