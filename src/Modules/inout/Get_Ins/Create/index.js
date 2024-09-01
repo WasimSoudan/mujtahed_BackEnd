@@ -13,7 +13,7 @@ module.exports =
      values
     );
 
-    res.json({ success: true, message: 'Phone was created successfully.', data: rows });
+    res.json({ success: true, message: 'Get In was created successfully.', data: rows });
    } catch ({ message }) {
     res.json({ success: false, message });
    }

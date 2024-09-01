@@ -1,7 +1,7 @@
 module.exports =
  route =>
  ({ pool, ...app }) => {
-  // Create Outcoming
+  // Create Get_Out
   app.post(route, async (req, res) => {
    try {
     const fields = Object.keys(req.body);
@@ -13,7 +13,7 @@ module.exports =
      values
     );
 
-    res.json({ success: true, message: 'Outcoming was created successfully.', data: rows });
+    res.json({ success: true, message: 'Get Out was created successfully.', data: rows });
    } catch ({ message }) {
     res.json({ success: false, message });
    }

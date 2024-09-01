@@ -16,7 +16,7 @@ module.exports =
     res.json({
      success: true,
      no_of_records: rows.length,
-     msg: `Incoming${1 === rows.length ? ' was' : 's were'} retrieved successfully.`,
+     msg: `Get in${1 === rows.length ? ' was' : 's were'} retrieved successfully.`,
      data: rows,
     });
    } catch ({ message }) {
