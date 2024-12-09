@@ -19,6 +19,7 @@
  "repository": "git@github.com:iconsjo1/trellarest-Auto.git",
  "scripts": {
   "dev": "yarn && nodemon .",
+  "start": "nodemon .",
   "format": "prettier --write package.json index.js src/**/*.js"
  }
 }
