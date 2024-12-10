@@ -1,5 +1,5 @@
 import express from 'express';
-
+import multer from 'multer';
 const app = express();
 const port = 3000;
 
@@ -12,13 +12,14 @@ const supabaseKey =
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 app.use(express.json());
-
-// app.use(express.static('public'));
+const upload = multer({
+ storage: multer.memoryStorage(), 
+});
 
 app.get('/', async (req, res) => {
  try {
   const { data, error } = await supabase.from('Users').select('*');
-  console.log(data);
+
 
   if (error) throw Error('Error');
 
@@ -53,6 +54,51 @@ app.put('/', async (req, res) => {
   return res.status(200).json({ success: true, data });
  } catch (e) {
   console.error(e);
+ }
+});
+
+app.post('/upload', upload.single('file'), async (req, res) => {
+ try {
+  const file = req.file;
+
+  if (!file) {
+   return res.status(400).send({ error: 'No file uploaded' });
+  }
+
+  // Upload file to Supabase Storage
+  const { data, error } = await supabase.storage
+   .from('documents') // Your bucket name
+   .upload(`${Date.now()}-${file.originalname}`, file.buffer, {
+    contentType: file.mimetype,
+    upsert: false, 
+   });
+
+  if (error) {
+   console.error('Error uploading file:', error);
+   return res.status(500).send({ error: 'File upload failed' });
+  }
+
+  res.status(200).send({ message: 'File uploaded successfully', path: data.path });
+ } catch (err) {
+  console.error('Unexpected error:', err);
+  res.status(500).send({ error: 'Internal Server Error' });
+ }
+});
+
+app.get('/file/:filePath', async (req, res) => {
+ try {
+  const filePath = req.params.filePath;
+ 
+  const { data, error } = await supabase.storage.from('documents').getPublicUrl(filePath);
+  if (error) {
+   console.error('Error generating public URL:', error);
+   return res.status(500).send({ error: 'Failed to generate public URL' });
+  }
+
+  res.status(200).send({ publicUrl: data.publicUrl });
+ } catch (err) {
+  console.error('Unexpected error:', err);
+  res.status(500).send({ error: 'Internal Server Error' });
  }
 });
 
