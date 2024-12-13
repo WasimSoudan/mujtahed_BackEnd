@@ -1,5 +1,6 @@
 import express from 'express';
 import multer from 'multer';
+import cors from 'cors';
 const app = express();
 const port = 3000;
 
@@ -15,8 +16,14 @@ app.use(express.json());
 const upload = multer({
  storage: multer.memoryStorage(),
 });
+app.use((_, res, next) => {
+ res.set('Access-Control-Allow-Origin', '*');
+ next();
+});
 
-app.get('/', async (req, res) => {
+app.use(cors());
+
+app.get('/user', async (req, res) => {
  try {
   const { data, error } = await supabase.from('Users').select('*');
 
@@ -28,7 +35,7 @@ app.get('/', async (req, res) => {
  }
 });
 
-app.post('/', async (req, res) => {
+app.post('/user', async (req, res) => {
  try {
   const { name } = req.body;
 
@@ -42,7 +49,7 @@ app.post('/', async (req, res) => {
  }
 });
 
-app.put('/', async (req, res) => {
+app.put('/user', async (req, res) => {
  try {
   const { name } = req.body;
   const { id } = req.query;
@@ -101,7 +108,7 @@ app.get('/file/:filePath', async (req, res) => {
  }
 });
 
-app.delete('/', async (req, res) => {
+app.delete('/user', async (req, res) => {
  try {
   const { id } = req.query;
 
@@ -169,6 +176,23 @@ app.delete('/note', async (req, res) => {
   }
 
   return res.status(200).json({ success: true });
+ } catch (err) {
+  console.error('Unexpected error:', err);
+  return res.status(500).json({ success: false, error: 'Unexpected server error' });
+ }
+});
+
+app.post('/login', async (req, res) => {
+ const { username } = req.body;
+ try {
+  const { data, error } = await supabase.from('Users').select().eq('name', username);
+
+  if (error) {
+   console.error('Database error:', error);
+   return res.status(500).json({ success: false, error: error.message });
+  }
+
+  return res.status(200).json({ success: data.length > 0 ? true : false, data });
  } catch (err) {
   console.error('Unexpected error:', err);
   return res.status(500).json({ success: false, error: 'Unexpected server error' });
