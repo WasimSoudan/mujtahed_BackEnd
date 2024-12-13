@@ -13,13 +13,12 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 app.use(express.json());
 const upload = multer({
- storage: multer.memoryStorage(), 
+ storage: multer.memoryStorage(),
 });
 
 app.get('/', async (req, res) => {
  try {
   const { data, error } = await supabase.from('Users').select('*');
-
 
   if (error) throw Error('Error');
 
@@ -70,7 +69,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
    .from('documents') // Your bucket name
    .upload(`${Date.now()}-${file.originalname}`, file.buffer, {
     contentType: file.mimetype,
-    upsert: false, 
+    upsert: false,
    });
 
   if (error) {
@@ -88,7 +87,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 app.get('/file/:filePath', async (req, res) => {
  try {
   const filePath = req.params.filePath;
- 
+
   const { data, error } = await supabase.storage.from('documents').getPublicUrl(filePath);
   if (error) {
    console.error('Error generating public URL:', error);
@@ -112,6 +111,67 @@ app.delete('/', async (req, res) => {
   return res.status(200).json({ success: true, message: 'the user was deleted ' });
  } catch (e) {
   console.error(e);
+ }
+});
+app.get('/note', async (req, res) => {
+ const { user_id } = req.query;
+ const { data, error } =
+  user_id > 0
+   ? await supabase.from('V_Note').select('*').eq('user_id', user_id)
+   : await supabase.from('V_Note').select('*');
+
+ if (error) throw Error('Error');
+
+ return res.status(200).json({ success: true, data });
+});
+app.post('/note', async (req, res) => {
+ const { user_id, note } = req.body;
+ try {
+  const { data, error } = await supabase.from('Notes').insert([{ user_id, note }]).select();
+
+  if (error) {
+   console.error('Database error:', error);
+   return res.status(500).json({ success: false, error: error.message });
+  }
+
+  return res.status(200).json({ success: true, data });
+ } catch (err) {
+  console.error('Unexpected error:', err);
+  return res.status(500).json({ success: false, error: 'Unexpected server error' });
+ }
+});
+
+app.put('/note', async (req, res) => {
+ const { note } = req.body;
+ const { id } = req.query;
+ try {
+  const { data, error } = await supabase.from('Notes').update({ note }).eq('id', id).select();
+
+  if (error) {
+   console.error('Database error:', error);
+   return res.status(500).json({ success: false, error: error.message });
+  }
+
+  return res.status(200).json({ success: true, data });
+ } catch (err) {
+  console.error('Unexpected error:', err);
+  return res.status(500).json({ success: false, error: 'Unexpected server error' });
+ }
+});
+app.delete('/note', async (req, res) => {
+ const { id } = req.query;
+ try {
+  const { data, error } = await supabase.from('Notes').delete().eq('id', id);
+
+  if (error) {
+   console.error('Database error:', error);
+   return res.status(500).json({ success: false, error: error.message });
+  }
+
+  return res.status(200).json({ success: true });
+ } catch (err) {
+  console.error('Unexpected error:', err);
+  return res.status(500).json({ success: false, error: 'Unexpected server error' });
  }
 });
 
